@@ -64,6 +64,16 @@ vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
 EOF
 
 
+" Vim Sets
+lua << EOF
+vim.opt.scrolloff = 6
+
+vim.opt.updatetime = 50
+
+vim.opt.termguicolors = true
+EOF
+
+
 "Copilot
 lua << EOF
 -- Copilot settings
@@ -150,6 +160,8 @@ set shiftwidth=4
 set softtabstop=2
 set tabstop=2
 set cinoptions=(,W1,g1,i1,t0,+1,c1)
+
+set smartindent
 
 " Some basics:
 	nnoremap c "_c
