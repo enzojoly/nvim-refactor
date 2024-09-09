@@ -20,7 +20,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-commentary'
 Plug 'lervag/vimtex'
-Plug 'arcticicestudio/nord-vim'
+"Plug 'arcticicestudio/nord-vim'
 "Plug 'folke/tokyonight.nvim'
 Plug 'sainnhe/everforest'  " Kanagawa uses the Everforest theme
 Plug 'slugbyte/lackluster.nvim'
@@ -32,6 +32,17 @@ Plug 'neovim/nvim-lspconfig'
 "Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+" avante dependencies
+Plug 'stevearc/dressing.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'MunifTanjim/nui.nvim'
+" avante optional
+Plug 'echasnovski/mini.icons'
+Plug 'HakonHarnes/img-clip.nvim'
+"Plug 'zbirenbaum/copilot.lua'
+Plug 'MeanderingProgrammer/render-markdown.nvim'
+" avante.nvim
+Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': { -> avante#build() }, 'on': 'AvanteAsk' }
 call plug#end()
 
 set title
@@ -53,7 +64,7 @@ lackluster.setup({
 })
 
 
-vim.cmd.colorscheme("lackluster")
+--vim.cmd.colorscheme("lackluster")
 
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
@@ -330,7 +341,6 @@ local servers = {
     'erlangls', -- Erlang
     'r_language_server', -- R
     'julials', -- Julia
-    'matlab_ls', -- MATLAB
     'perlls', 'perlnavigator', -- Perl
     'groovyls', -- Groovy
     'clojure_lsp', -- Clojure
@@ -342,7 +352,7 @@ local servers = {
     'texlab', -- LaTeX
     'lemminx', -- XML
     'taplo', -- TOML
-    'marksman', 'prosemd_lsp', 'remark_ls', -- Markdown
+    'remark_ls', -- Markdown
     'astro', -- Astro
     'cssmodules_ls', -- CSS Modules
     'denols', -- Deno
@@ -416,7 +426,6 @@ local servers = {
     'serve_d', -- D
     'dagger', -- Dagger
     'erg_language_server', -- Erg
-    'grammarly', -- Grammarly
     'hdl_checker', -- HDL
     'hhvm', -- Hack
     'hoon_ls', -- Hoon
@@ -428,7 +437,6 @@ local servers = {
     'phan', -- PHP (alternative)
     'reason_ls', -- Reason
     'sourcery', -- Python refactoring
-    'tailwindcss', -- Tailwind CSS
     'templ', -- Templ
     'visualforce_ls', -- Visualforce
     'vtsls', -- TypeScript (alternative)
@@ -668,9 +676,24 @@ lspconfig.lemminx.setup{}
 lspconfig.taplo.setup{}
 
 -- Markdown
-lspconfig.marksman.setup{}
-lspconfig.prosemd_lsp.setup{}
-lspconfig.remark_ls.setup{}
+lspconfig.remark_ls.setup({
+    filetypes = { "markdown" },
+    cmd = { "/home/enzo/.local/share/nvim/mason/bin/remark-language-server", "--stdio" },
+    root_dir = lspconfig.util.root_pattern(".git", "package.json"),
+    settings = {
+        remark = {
+            lint = {
+                -- linting rules here
+            },
+            format = {
+                -- formatting options here
+            },
+            plugins = {
+                -- remark plugins here
+            }
+        }
+    }
+})
 
 -- Astro
 lspconfig.astro.setup{}
@@ -908,9 +931,6 @@ lspconfig.dagger.setup{}
 -- Erg
 lspconfig.erg_language_server.setup{}
 
--- Grammarly
-lspconfig.grammarly.setup{}
-
 -- HDL
 lspconfig.hdl_checker.setup{}
 
@@ -943,9 +963,6 @@ lspconfig.reason_ls.setup{}
 
 -- Python refactoring
 lspconfig.sourcery.setup{}
-
--- Tailwind CSS
-lspconfig.tailwindcss.setup{}
 
 -- Templ
 lspconfig.templ.setup{}
@@ -1042,6 +1059,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 )
 
 --close the lua block
+EOF
+
+lua << EOF
 EOF
 
 silent! source ~/.config/nvim/shortcuts.vim
