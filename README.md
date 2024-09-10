@@ -3,11 +3,12 @@ Messy init \.vim -> init.lua time !
 
 nvim/
 ├── init.lua
+├── lazylock.json
 ├── lua/
 │   ├── rc-ttnjja/
 │   │   ├── init.lua
 │   │   ├── autocmd.lua
-│   │   ├── packer.lua
+│   │   ├── lazy.lua
 │   │   ├── remap.lua
 │   │   ├── utils.lua
 │   │   └── settings.lua
