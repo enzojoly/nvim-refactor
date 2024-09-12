@@ -66,19 +66,19 @@ autocmd({"BufRead", "BufNewFile"}, {
 })
 
 -- Enable Goyo by default for mutt writing
-autocmd({"BufRead", "BufNewFile"}, {
-    pattern = "/tmp/neomutt*",
-    callback = function()
-        vim.g.goyo_width = 80
-        vim.cmd('Goyo')
-        vim.cmd('set bg=light')
-        vim.keymap.set('n', 'ZZ', ':Goyo\\|x!<CR>', { buffer = true })
-        vim.keymap.set('n', 'ZQ', ':Goyo\\|q!<CR>', { buffer = true })
-    end,
-})
+--autocmd({"BufRead", "BufNewFile"}, {
+    --pattern = "/tmp/neomutt*",
+    --callback = function()
+        --vim.g.goyo_width = 80
+        --vim.cmd('Goyo')
+        --vim.cmd('set bg=light')
+        --vim.keymap.set('n', 'ZZ', ':Goyo\\|x!<CR>', { buffer = true })
+        --vim.keymap.set('n', 'ZQ', ':Goyo\\|q!<CR>', { buffer = true })
+    --end,
+--})
 
 -- When shortcut files are updated, renew bash and ranger configs with new material:
-autocmd("BufWritePost", {
-    pattern = {"bm-files", "bm-dirs"},
-    command = [[!shortcuts]],
-})
+--autocmd("BufWritePost", {
+    --pattern = {"bm-files", "bm-dirs"},
+    --command = [[!shortcuts]],
+--})

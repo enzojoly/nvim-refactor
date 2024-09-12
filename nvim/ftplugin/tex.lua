@@ -2,7 +2,7 @@
 -- Specific settings for LaTeX files
 
 -- Enable spell checking
-vim.opt_local.spell = true
+vim.opt_local.spell = false
 vim.opt_local.spelllang = "en_gb"
 
 -- Set textwidth to 80 characters

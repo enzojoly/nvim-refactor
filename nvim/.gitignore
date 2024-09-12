@@ -1,0 +1,10 @@
+
+# Allow specific files or directories
+!init.lua
+!lazy-lock.json
+!/lua/**
+!/ftplugin/
+
+# Ignore API keys
+/lua/rc-ttnjja/keys/*
+/lua/rc-ttnjja/keys/**

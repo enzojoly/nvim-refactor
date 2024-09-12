@@ -1,10 +1,11 @@
--- rc-ttnjja/remap.lua
+
 -- Key mappings for Neovim
 
+-- Updated map function using vim.keymap.set
 local function map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
     if opts then options = vim.tbl_extend('force', options, opts) end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+    vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- Search for <++> placeholders
@@ -12,9 +13,6 @@ map('', ',,', ':keepp /<++><CR>ca<')
 
 -- NERDTree toggle
 map('n', '<leader>n', ':NERDTreeToggle<CR>')
-
--- Goyo plugin for distraction-free writing
-map('n', '<leader>f', ':Goyo \\| set bg=light \\| set linebreak<CR>')
 
 -- Spell-check toggle (set to English US)
 map('n', '<leader>o', ':setlocal spell! spelllang=en_us<CR>')
@@ -58,18 +56,12 @@ local function toggle_hidden_all()
         hidden_all = 0
     end
 end
-
-map('n', '<leader>h', ':lua toggle_hidden_all()<CR>')
+map('n', '<leader>h', toggle_hidden_all)
 
 -- Set the key mapping to toggle spell checking
 map('n', '<F5>', ':setlocal spell! spelllang=en_gb<CR>')
 
--- VimTeX compile toggle
-map('n', '<leader>ll', ':VimtexCompile<CR>')
-
--- The following are new functionalities from the Lua config.
--- They are commented out but described for reference.
-
+-- Uncomment and adjust the following mappings as needed
 --[[
 -- Resize with arrows
 map("n", "<C-Up>", ":resize -2<CR>")
