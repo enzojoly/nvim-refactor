@@ -100,10 +100,10 @@ function M.on_attach_format(client, bufnr)
     })
 
     -- Notify that formatting has been set up (for debugging)
-    vim.notify(
-        "lsp formater " .. client.name .. " set to buffer " .. bufnr .. ": " .. vim.api.nvim_buf_get_name(bufnr),
-        vim.log.levels.TRACE
-    )
+    --vim.notify(
+    --    "lsp formater " .. client.name .. " set to buffer " .. bufnr .. ": " .. vim.api.nvim_buf_get_name(bufnr),
+    --    vim.log.levels.TRACE
+    --)
 end
 
 -- Set up LSP capabilities
