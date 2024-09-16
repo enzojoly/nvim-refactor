@@ -7,11 +7,11 @@ local function map(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, options)
 end
 
--- Move by visual lines (wrapped lines)
+-- Move in visual lines (wrapped lines)
 map('n', 'j', 'gj')
 map('n', 'k', 'gk')
 
--- Move by actual lines (classic Vim behaviour)
+-- Move in actual lines (classic Vim behaviour)
 map('n', 'J', 'j')
 map('n', 'K', 'k')
 
