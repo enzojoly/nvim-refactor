@@ -5,7 +5,7 @@
 vim.opt_local.spell = false
 vim.opt_local.spelllang = "en_gb"
 
--- Set textwidth to 80 characters
+-- Set textwidth 80 characters
 --vim.opt_local.textwidth = 80
 
 -- Enable soft wrapping
