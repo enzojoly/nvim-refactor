@@ -25,6 +25,12 @@ function M.def_reference_highlight()
     vim.cmd("highlight LspReferenceRead guibg=#d9ead3")
     -- Highlight for write references, with underline
     vim.cmd("highlight LspReferenceWrite guibg=#cfe2f3 gui=underline")
+
+    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+            update_in_insert = true,
+        }
+    )
 end
 
 -- Set up keybindings for LSP functionality

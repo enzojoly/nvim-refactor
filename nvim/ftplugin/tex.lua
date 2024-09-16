@@ -6,7 +6,7 @@ vim.opt_local.spell = false
 vim.opt_local.spelllang = "en_gb"
 
 -- Set textwidth to 80 characters
-vim.opt_local.textwidth = 80
+--vim.opt_local.textwidth = 80
 
 -- Enable soft wrapping
 vim.opt_local.wrap = true
@@ -35,7 +35,8 @@ vim.g.vimtex_quickfix_mode = 0
 -- LaTeX cleanup function
 local function cleanup_tex_files()
     local texfile = vim.fn.expand('%:t:r')
-    local extensions_to_delete = {'aux', 'log', 'out', 'toc', 'lof', 'lot', 'bbl', 'blg', 'fls', 'fdb_latexmk', 'synctex.gz'}
+    local extensions_to_delete = { 'aux', 'log', 'out', 'toc', 'lof', 'lot', 'bbl', 'blg', 'fls', 'fdb_latexmk',
+        'synctex.gz' }
 
     for _, ext in ipairs(extensions_to_delete) do
         local file = texfile .. '.' .. ext
