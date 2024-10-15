@@ -5,6 +5,7 @@ Messy init .vim -> init.lua time !
 ## Directory Structure
 
 ````
+
 nvim-refactor
 ├── lazy-lock.json
 └── lua
@@ -53,8 +54,8 @@ nvim-refactor
     │   │   ├── svelte.lua
     │   │   ├── taplo.lua
     │   │   ├── texlab.lua
-    │   │   ├── tsserver.lua
     │   │   ├── vimls.lua
+
     │   │   ├── yamlls.lua
     │   │   └── zls.lua
     │   └── servers_deprecated

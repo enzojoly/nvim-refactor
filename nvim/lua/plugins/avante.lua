@@ -86,13 +86,6 @@ return {
                 },
             },
         },
-        {
-            'MeanderingProgrammer/render-markdown.nvim',
-            opts = {
-                file_types = { "markdown", "Avante" },
-            },
-            ft = { "markdown", "Avante" },
-        },
     },
     config = function(_, opts)
         vim.schedule(function()
@@ -102,7 +95,7 @@ return {
             if not setup_success then
                 vim.notify("Failed to set up Avante: " .. tostring(setup_error), vim.log.levels.ERROR)
             else
-                vim.notify("Avante setup successful", vim.log.levels.INFO)
+                --                vim.notify("Avante setup successful", vim.log.levels.INFO)
             end
 
             -- Additional setup steps
@@ -122,7 +115,7 @@ return {
                     if not load_success then
                         vim.notify("Failed to load avante_lib: " .. tostring(load_error), vim.log.levels.ERROR)
                     else
-                        vim.notify("avante_lib loaded successfully", vim.log.levels.INFO)
+                        --                       vim.notify("avante_lib loaded successfully", vim.log.levels.INFO)
                     end
                 end)
             end,

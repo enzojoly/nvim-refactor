@@ -4,28 +4,28 @@
 local M = {} -- Module table
 
 -- Define diagnostic signs for LSP
-function M.define_sign()
-    local signs = {
-        { name = "DiagnosticSignError", text = "✘", texthl = "DiagnosticSignError" },
-        { name = "DiagnosticSignWarn", text = "▲", texthl = "DiagnosticSignWarn" },
-        { name = "DiagnosticSignHint", text = "⚑", texthl = "DiagnosticSignHint" },
-        { name = "DiagnosticSignInfo", text = "ℹ", texthl = "DiagnosticSignInfo" },
-    }
+--function M.define_sign()
+--    local signs = {
+--        { name = "DiagnosticSignError", text = "✘", texthl = "DiagnosticSignError" },
+--        { name = "DiagnosticSignWarn", text = "▲", texthl = "DiagnosticSignWarn" },
+--        { name = "DiagnosticSignHint", text = "⚑", texthl = "DiagnosticSignHint" },
+--        { name = "DiagnosticSignInfo", text = "ℹ", texthl = "DiagnosticSignInfo" },
+--    }
 
-    for _, sign in ipairs(signs) do
-        vim.fn.sign_define(sign.name, { texthl = sign.texthl, text = sign.text, numhl = "" })
-    end
-end
+--    for _, sign in ipairs(signs) do
+--        vim.fn.sign_define(sign.name, { texthl = sign.texthl, text = sign.text, numhl = "" })
+--    end
+--end
 
 -- Define highlight groups for LSP references
 function M.def_reference_highlight()
     -- Highlight for text references
-    vim.cmd("highlight LspReferenceText guibg=#bcbcbc")
-    -- Highlight for read references
-    vim.cmd("highlight LspReferenceRead guibg=#d9ead3")
-    -- Highlight for write references, with underline
-    vim.cmd("highlight LspReferenceWrite guibg=#cfe2f3 gui=underline")
-
+    --    vim.cmd("highlight LspReferenceText guibg=#bcbcbc")
+    --    -- Highlight for read references
+    --    vim.cmd("highlight LspReferenceRead guibg=#d9ead3")
+    --    -- Highlight for write references, with underline
+    --    vim.cmd("highlight LspReferenceWrite guibg=#cfe2f3 gui=underline")
+    --
     vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics, {
             update_in_insert = true,
@@ -61,33 +61,33 @@ function M.keymap(bufnr)
 end
 
 -- Set up automatic highlighting of the symbol under the cursor
----@param bufnr number Buffer number to attach the auto-highlight to
-function M.auto_highlight_document(bufnr)
-    -- Create an autocommand group for document highlighting
-    local g = vim.api.nvim_create_augroup("document_highlight", { clear = false })
+--@param bufnr number Buffer number to attach the auto-highlight to
+--function M.auto_highlight_document(bufnr)
+-- Create an autocommand group for document highlighting
+--    local g = vim.api.nvim_create_augroup("document_highlight", { clear = false })
 
-    -- Autocommand to highlight symbol under cursor when holding the cursor still
-    --vim.api.nvim_create_autocmd("CursorHold", {
-    --    callback = vim.lsp.buf.document_highlight,
-    --    group = g,
-    --    buffer = bufnr,
-    --    desc = "Highlights symbol under cursor",
-    --})
+-- Autocommand to highlight symbol under cursor when holding the cursor still
+--vim.api.nvim_create_autocmd("CursorHold", {
+--    callback = vim.lsp.buf.document_highlight,
+--    group = g,
+--    buffer = bufnr,
+--    desc = "Highlights symbol under cursor",
+--})
 
-    -- Autocommand to clear highlights when moving the cursor
-    vim.api.nvim_create_autocmd("CursorMoved", {
-        callback = vim.lsp.buf.clear_references,
-        group = g,
-        buffer = bufnr,
-        desc = "Removes document highlights from current buffer.",
-    })
+-- Autocommand to clear highlights when moving the cursor
+--    vim.api.nvim_create_autocmd("CursorMoved", {
+--        callback = vim.lsp.buf.clear_references,
+--        group = g,
+--        buffer = bufnr,
+--        desc = "Removes document highlights from current buffer.",
+--    })
 
-    -- Notify that document highlight has been set up (for debugging)
-    vim.notify(
-        "lsp document highlight set to buffer: " .. bufnr .. ": " .. vim.api.nvim_buf_get_name(bufnr),
-        vim.log.levels.TRACE
-    )
-end
+-- Notify that document highlight has been set up (for debugging)
+--    vim.notify(
+--        "lsp document highlight set to buffer: " .. bufnr .. ": " .. vim.api.nvim_buf_get_name(bufnr),
+--        vim.log.levels.TRACE
+--    )
+--end
 
 -- Set up automatic formatting on save
 ---@param client table LSP client
@@ -137,7 +137,7 @@ function M.setup()
         -- Set up keymaps
         M.keymap(bufnr)
         -- Set up document highlighting
-        M.auto_highlight_document(bufnr)
+        --M.auto_highlight_document(bufnr)
 
         -- Set up formatting if the client supports it
         if client.supports_method("textDocument/formatting") then
@@ -185,7 +185,7 @@ function M.setup()
 
     -- Function to setup LSP for a buffer
     local function setup_lsp_for_buffer(bufnr)
-        local filetype = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+        local filetype = vim.bo[bufnr].filetype
         local servers = filetype_to_lsp[filetype]
 
         if servers then
