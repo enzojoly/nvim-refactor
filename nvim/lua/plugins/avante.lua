@@ -9,9 +9,14 @@ return {
     build = function()
         local plugin_dir = vim.fn.stdpath("data") .. "/lazy/avante.nvim"
         vim.notify("Building avante.nvim in " .. plugin_dir, vim.log.levels.INFO)
-        local result = vim.fn.system("cd " .. plugin_dir .. " && make")
+        local clean_result = vim.fn.system("cd " .. plugin_dir .. " && make clean")
         if vim.v.shell_error ~= 0 then
-            vim.notify("Failed to build avante.nvim: " .. result, vim.log.levels.ERROR)
+            vim.notify("Failed to clean avante.nvim: " .. clean_result, vim.log.levels.ERROR)
+            return
+        end
+        local build_result = vim.fn.system("cd " .. plugin_dir .. " && make")
+        if vim.v.shell_error ~= 0 then
+            vim.notify("Failed to build avante.nvim: " .. build_result, vim.log.levels.ERROR)
         else
             vim.notify("Successfully built avante.nvim", vim.log.levels.INFO)
         end
