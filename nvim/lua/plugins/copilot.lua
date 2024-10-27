@@ -2,41 +2,41 @@
 -- Configuration for GitHub Copilot
 
 return {
-  "zbirenbaum/copilot.lua",
-  cmd = "Copilot",
-  event = "InsertEnter",
-  config = function()
-    require("copilot").setup({
-      suggestion = {
-        enabled = true,
-        auto_trigger = true,
-        keymap = {
-          accept = false, -- Disable default accept keymap
-          next = "<M-]>",
-          prev = "<M-[>",
-          dismiss = "<C-]>",
-        },
-      },
-      filetypes = {
-        lua = true,
-        python = true,
-        javascript = true,
-        typescript = true,
-        ["."] = false, -- disable for all unlisted filetypes
-      },
-    })
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+        require("copilot").setup({
+            suggestion = {
+                enabled = true,
+                auto_trigger = true,
+                keymap = {
+                    accept = false, -- Disable default accept keymap
+                    next = "<M-]>",
+                    prev = "<M-[>",
+                    dismiss = "<C-]>",
+                },
+            },
+            filetypes = {
+                lua = true,
+                python = true,
+                javascript = true,
+                typescript = true,
+                ["."] = false, -- disable for all unlisted filetypes
+            },
+        })
 
-    -- Custom keymapping to preserve Tab functionality
-    local function accept_suggestion()
-      if require("copilot.suggestion").is_visible() then
-        require("copilot.suggestion").accept()
-      else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
-      end
-    end
+        -- Custom keymapping to preserve Tab functionality
+        local function accept_suggestion()
+            if require("copilot.suggestion").is_visible() then
+                require("copilot.suggestion").accept()
+            else
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+            end
+        end
 
-    vim.keymap.set("i", "<Tab>", accept_suggestion, { expr = false, silent = true })
-  end,
+        vim.keymap.set("i", "<Tab>", accept_suggestion, { expr = false, silent = true })
+    end,
 }
 
 -- Configuration Overview and Additional Options:
@@ -79,3 +79,4 @@ return {
 
 -- Adjust these options as your needs evolve. Remember to restart Neovim or reload your
 -- configuration after making changes.
+
