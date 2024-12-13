@@ -162,6 +162,7 @@ function M.setup()
         fortran = { "fortls" },
         go = { "gopls" },
         graphql = { "graphql" },
+        haskell = { "hls" },
         html = { "html" },
         java = { "jdtls" },
         json = { "jsonls" },
