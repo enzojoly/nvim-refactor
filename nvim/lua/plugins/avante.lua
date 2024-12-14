@@ -25,7 +25,7 @@ return {
         provider = "claude",
         claude = {
             endpoint = "https://api.anthropic.com",
-            model = "claude-3-5-sonnet-20240620",
+            model = "claude-3-5-sonnet-20241022",
             temperature = 0,
             max_tokens = 4096,
             api_key = vim.env.ANTHROPIC_KEY,
@@ -41,7 +41,8 @@ return {
         windows = {
             position = "right",
             wrap = true,
-            width = 30,
+            width = 40,
+            height = 20,
             sidebar_header = {
                 align = "center",
                 rounded = true,
