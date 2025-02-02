@@ -5,7 +5,7 @@ vim.opt_local.wrap = true
 vim.opt_local.spell = true
 vim.opt_local.spelllang = "en_gb"
 vim.opt_local.conceallevel = 2
---vim.opt_local.textwidth = 80
+vim.opt_local.textwidth = 180
 vim.opt_local.formatoptions:append('a')
 vim.opt_local.expandtab = true
 vim.opt_local.tabstop = 2

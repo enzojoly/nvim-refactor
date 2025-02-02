@@ -7,7 +7,7 @@ return {
     -- except for subdirectories load separately
 
     require("plugins.avante"),
-    require("plugins.copilot"),
+    --    require("plugins.copilot"),
     require("plugins.telescope"),
 
     -- Load subdirectory
