@@ -8,7 +8,7 @@ return {
         require("mason").setup()
         require("mason-lspconfig").setup({
             ensure_installed = {
-                "asm_lsp", "bashls", "clangd", "clojure_lsp", "cmake", "cssls", "cssmodules_ls",
+                "asm_lsp", "bashls", "clangd", "clojure_lsp", "cssls", "cssmodules_ls",
                 "docker_compose_language_service", "dockerls", "elixirls", "fortls",
                 "gopls", "graphql", "html", "intelephense", "jdtls", "jedi_language_server",
                 "jsonls", "kotlin_language_server", "lemminx", "lua_ls", "neocmake",

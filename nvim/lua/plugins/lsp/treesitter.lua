@@ -8,9 +8,9 @@ return {
         config = function()
             require 'nvim-treesitter.configs'.setup {
                 ensure_installed = {
-                    "asm", "bash", "c", "clojure", "cmake", "css", "dockerfile", "elixir",
-                    "fortran", "go", "graphql", "haskell", "html", "java", "javascript", "json",
-                    "kotlin", "latex", "lua", "markdown", "nix", "ocaml", "php", "python", "rust",
+                    "asm", "bash", "c", "clojure", "cmake", "css", "dockerfile", "elixir", "fortran",
+                    "go", "graphql", "haskell", "html", "java", "javascript", "json", "kotlin",
+                    "latex", "lua", "markdown", "nix", "ocaml", "php", "python", "rust", "regex",
                     "scala", "solidity", "sql", "svelte", "toml", "typescript", "vim", "yaml", "zig"
                 },
                 sync_install = false,
