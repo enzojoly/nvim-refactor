@@ -32,10 +32,15 @@ vim.g.vimtex_compiler_method = 'latexmk'
 vim.g.vimtex_view_method = 'zathura'
 vim.g.vimtex_quickfix_mode = 0
 
+-- Explicitly configure latexmk with no output directory
+vim.g.vimtex_compiler_latexmk = {
+    out_dir = '.'
+}
+
 -- LaTeX cleanup function
 local function cleanup_tex_files()
     local texfile = vim.fn.expand('%:t:r')
-    local extensions_to_delete = { 'aux', 'log', 'out', 'toc', 'lof', 'lot', 'bbl', 'blg', 'fls', 'fdb_latexmk',
+    local extensions_to_delete = { 'aux', 'log', 'out', 'toc', 'lof', 'lot', 'bbl', 'blg', 'fls', 'fdb_latexmk', 'xdv',
         'synctex.gz' }
 
     for _, ext in ipairs(extensions_to_delete) do
