@@ -41,7 +41,7 @@ vim.g.vimtex_compiler_latexmk = {
 local function cleanup_tex_files()
     local texfile = vim.fn.expand('%:t:r')
     local extensions_to_delete = { 'aux', 'log', 'out', 'toc', 'lof', 'lot', 'bbl', 'blg', 'fls', 'fdb_latexmk', 'xdv',
-        'synctex.gz' }
+        'xml', 'bcf', 'synctex.gz' }
 
     for _, ext in ipairs(extensions_to_delete) do
         local file = texfile .. '.' .. ext

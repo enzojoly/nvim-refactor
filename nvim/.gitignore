@@ -1,6 +1,0 @@
-
-# Allow specific files or directories
-!init.lua
-!lazy-lock.json
-!/lua/**
-!/ftplugin/

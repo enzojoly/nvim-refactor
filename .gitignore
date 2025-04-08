@@ -1,0 +1,9 @@
+
+# Allow specific files or directories
+!nvim/init.lua
+!nvim/lazy-lock.json
+!nvim/lua/**
+!nvim/ftplugin/
+!dot-vim-backup/
+!README.md
+!todo.md
