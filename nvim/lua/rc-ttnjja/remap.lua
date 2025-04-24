@@ -39,6 +39,12 @@ map('n', '<leader>s', ':!clear && shellcheck -x %<CR>')
 -- Open bibliography file in a split
 map('n', '<leader>b', ':vsp<space>$BIB<CR>')
 
+-- Jump to the next diagnostic (e.g., error)
+map('n', 'f', vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+
+-- Jump to the previous diagnostic
+map('n', 't', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+
 -- Open reference file in a split
 map('n', '<leader>r', ':vsp<space>$REFER<CR>')
 
