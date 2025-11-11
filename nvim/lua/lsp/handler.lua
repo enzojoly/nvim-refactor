@@ -1,31 +1,9 @@
 -- lsp/handler.lua
--- This file handles the general LSP setup and provides common functions for all language servers
+-- Complete LSP configuration for Neovim 0.11+ with all servers
 
-local M = {} -- Module table
+local M = {}
 
--- Define diagnostic signs for LSP
---function M.define_sign()
---    local signs = {
---        { name = "DiagnosticSignError", text = "✘", texthl = "DiagnosticSignError" },
---        { name = "DiagnosticSignWarn", text = "▲", texthl = "DiagnosticSignWarn" },
---        { name = "DiagnosticSignHint", text = "⚑", texthl = "DiagnosticSignHint" },
---        { name = "DiagnosticSignInfo", text = "ℹ", texthl = "DiagnosticSignInfo" },
---    }
-
---    for _, sign in ipairs(signs) do
---        vim.fn.sign_define(sign.name, { texthl = sign.texthl, text = sign.text, numhl = "" })
---    end
---end
-
--- Define highlight groups for LSP references
 function M.def_reference_highlight()
-    -- Highlight for text references
-    --    vim.cmd("highlight LspReferenceText guibg=#bcbcbc")
-    --    -- Highlight for read references
-    --    vim.cmd("highlight LspReferenceRead guibg=#d9ead3")
-    --    -- Highlight for write references, with underline
-    --    vim.cmd("highlight LspReferenceWrite guibg=#cfe2f3 gui=underline")
-    --
     vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics, {
             update_in_insert = true,
@@ -33,182 +11,539 @@ function M.def_reference_highlight()
     )
 end
 
--- Set up keybindings for LSP functionality
----@param bufnr number Buffer number to attach the keybindings to
 function M.keymap(bufnr)
-    -- Function to open diagnostic float window
-    local function open_diagnostic()
-        vim.diagnostic.open_float(nil, { focusable = true })
-    end
-
-    -- Get the increname function from the inc_rename plugin
-    --local increname = require("inc_rename").increname
-
-    -- Set up various LSP-related keybindings
-    -- Uncomment and modify these as needed
-    --vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover", buffer = bufnr })
-    --vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "Signature", buffer = bufnr })
-    --vim.keymap.set("n", "<Leader>lh", vim.lsp.buf.hover, { desc = "Hover", buffer = bufnr })
-    --vim.keymap.set("n", "<Leader><C-k>", vim.lsp.buf.signature_help, { desc = "Signature", buffer = bufnr })
-    --vim.keymap.set("n", "<Leader>ls", vim.lsp.buf.signature_help, { desc = "Signature", buffer = bufnr })
-    --vim.keymap.set("n", "<Leader>l.", vim.lsp.buf.code_action, { desc = "Code Action", buffer = bufnr })
-    --vim.keymap.set("n", "<Leader>ld", vim.lsp.buf.definition, { desc = "Definitions", buffer = bufnr })
-    --vim.keymap.set("n", "<Leader>lD", vim.lsp.buf.declaration, { desc = "Declaration", buffer = bufnr })
-    --vim.keymap.set("n", "<Leader>li", vim.lsp.buf.implementation, { desc = "Implementation", buffer = bufnr })
-    --vim.keymap.set("n", "<Leader>lw", open_diagnostic, { desc = "Diagnostic", buffer = bufnr })
-    --vim.keymap.set("n", "<Leader>lf", vim.lsp.buf.format, { desc = "Format", buffer = bufnr })
-    --vim.keymap.set("n", "<F2>", increname, { desc = "Rename", buffer = bufnr })
+    -- Add custom keybindings here
 end
 
--- Set up automatic highlighting of the symbol under the cursor
---@param bufnr number Buffer number to attach the auto-highlight to
---function M.auto_highlight_document(bufnr)
--- Create an autocommand group for document highlighting
---    local g = vim.api.nvim_create_augroup("document_highlight", { clear = false })
-
--- Autocommand to highlight symbol under cursor when holding the cursor still
---vim.api.nvim_create_autocmd("CursorHold", {
---    callback = vim.lsp.buf.document_highlight,
---    group = g,
---    buffer = bufnr,
---    desc = "Highlights symbol under cursor",
---})
-
--- Autocommand to clear highlights when moving the cursor
---    vim.api.nvim_create_autocmd("CursorMoved", {
---        callback = vim.lsp.buf.clear_references,
---        group = g,
---        buffer = bufnr,
---        desc = "Removes document highlights from current buffer.",
---    })
-
--- Notify that document highlight has been set up (for debugging)
---    vim.notify(
---        "lsp document highlight set to buffer: " .. bufnr .. ": " .. vim.api.nvim_buf_get_name(bufnr),
---        vim.log.levels.TRACE
---    )
---end
-
--- Set up automatic formatting on save
----@param client table LSP client
----@param bufnr number Buffer number to attach the formatting to
 function M.on_attach_format(client, bufnr)
-    -- Create an autocommand to format the buffer before writing
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = vim.api.nvim_create_augroup("LspFormatting", { clear = false }),
         callback = function()
-            vim.lsp.buf.format({
-                bufnr = bufnr,
-            })
+            vim.lsp.buf.format({ bufnr = bufnr })
         end,
         desc = "Format buffer just before write",
         buffer = bufnr,
     })
-
-    -- Notify that formatting has been set up (for debugging)
-    --vim.notify(
-    --    "lsp formater " .. client.name .. " set to buffer " .. bufnr .. ": " .. vim.api.nvim_buf_get_name(bufnr),
-    --    vim.log.levels.TRACE
-    --)
 end
 
--- Set up LSP capabilities
----@return table capabilities
 function M.capabilities()
-    -- Get the default client capabilities
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-    -- Uncomment the following line if you decide to use nvim-cmp in the future
-    -- return require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-    -- For now, just return the default capabilities
-    return capabilities
+    return vim.lsp.protocol.make_client_capabilities()
 end
 
--- Main setup function for LSP
 function M.setup()
-    -- Define diagnostic signs
-    --M.define_sign()
-    -- Set up reference highlighting
     M.def_reference_highlight()
 
-    -- Common on_attach function for all LSP servers
     local on_attach = function(client, bufnr)
-        -- Set up keymaps
         M.keymap(bufnr)
-        -- Set up document highlighting
-        --M.auto_highlight_document(bufnr)
-
-        -- Set up formatting if the client supports it
         if client.supports_method("textDocument/formatting") then
             M.on_attach_format(client, bufnr)
         end
     end
 
-    -- Get the capabilities
     local capabilities = M.capabilities()
 
-    -- Define a table mapping filetypes to their respective language servers
-    local filetype_to_lsp = {
-        asm = { "asm_lsp" },
-        bash = { "bashls" },
-        c = { "clangd" },
-        cpp = { "clangd" },
-        clojure = { "clojure_lsp" },
-        cmake = { "cmake", "neocmake" },
-        css = { "cssls", "cssmodules_ls" },
-        dockerfile = { "dockerls" },
-        elixir = { "elixirls" },
-        fortran = { "fortls" },
-        go = { "gopls" },
-        graphql = { "graphql" },
-        haskell = { "hls" },
-        html = { "html" },
-        java = { "jdtls" },
-        json = { "jsonls" },
-        kotlin = { "kotlin_language_server" },
-        lua = { "lua_ls" },
-        markdown = { "remark_ls" },
-        nix = { "rnix" },
-        php = { "intelephense", "phpactor", "psalm" },
-        powershell = { "powershell_es" },
-        python = { "jedi_language_server", "pylsp", "pyright" },
-        rust = { "rust_analyzer" },
-        solidity = { "solang", "solidity_ls" },
-        sql = { "sqlls", "sqls" },
-        svelte = { "svelte" },
-        tex = { "texlab" },
-        toml = { "taplo" },
-        vim = { "vimls" },
-        yaml = { "yamlls" },
-        zig = { "zls" },
-    }
-
-    -- Function to setup LSP for a buffer
-    local function setup_lsp_for_buffer(bufnr)
-        local filetype = vim.bo[bufnr].filetype
-        local servers = filetype_to_lsp[filetype]
-
-        if servers then
-            for _, server in ipairs(servers) do
-                local ok, server_config = pcall(require, "lsp.servers." .. server)
-                if ok then
-                    server_config.setup(on_attach, capabilities)
-                else
-                    vim.notify("Failed to load LSP config for " .. server, vim.log.levels.ERROR)
-                end
-            end
+    -- Helper function
+    local function make_root_dir(markers)
+        return function(fname)
+            return vim.fs.root(fname, markers) or vim.fn.getcwd()
         end
     end
 
-    -- Set up an autocommand to run setup_lsp_for_buffer when a file is opened or when the filetype is set
-    vim.api.nvim_create_autocmd({ "BufReadPost", "FileType" }, {
-        group = vim.api.nvim_create_augroup("LspSetup", { clear = true }),
+    -- All server configurations
+    local servers = {
+        -- Assembly
+        asm_lsp = {
+            filetypes = {"asm", "s", "S"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- Bash
+        bashls = {
+            cmd = { "bash-language-server", "start" },
+            filetypes = { "sh", "bash" },
+            root_dir = make_root_dir({".git"}),
+            settings = {
+                bashIde = {
+                    globPattern = "*@(.sh|.inc|.bash|.command)"
+                }
+            }
+        },
+
+        -- C/C++
+        clangd = {
+            cmd = { "clangd", "--background-index" },
+            filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+            root_dir = make_root_dir({
+                '.clangd', '.clang-tidy', '.clang-format',
+                'compile_commands.json', '.git'
+            }),
+        },
+
+        -- C#
+        omnisharp = {
+            filetypes = {"cs"},
+            root_dir = make_root_dir({"*.sln", "*.csproj", ".git"}),
+        },
+
+        -- Clojure
+        clojure_lsp = {
+            filetypes = {"clojure", "edn"},
+            root_dir = make_root_dir({"project.clj", "deps.edn", ".git"}),
+        },
+
+        -- CMake
+        neocmake = {
+            filetypes = {"cmake"},
+            root_dir = make_root_dir({"CMakeLists.txt", ".git"}),
+        },
+
+        -- CSS
+        cssls = {
+            filetypes = { "css", "scss", "less" },
+            root_dir = make_root_dir({"package.json", ".git"}),
+            settings = {
+                css = { validate = true },
+                less = { validate = true },
+                scss = { validate = true }
+            }
+        },
+
+        cssmodules_ls = {
+            filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
+            root_dir = make_root_dir({"package.json", ".git"}),
+        },
+
+        -- Dart
+        dartls = {
+            root_dir = make_root_dir({"pubspec.yaml", ".git"}),
+        },
+
+        -- Docker
+        dockerls = {
+            filetypes = { "dockerfile" },
+            root_dir = make_root_dir({"Dockerfile", ".git"}),
+        },
+
+        docker_compose_language_service = {
+            filetypes = { "yaml.docker-compose" },
+            root_dir = make_root_dir({"docker-compose.yml", "docker-compose.yaml"}),
+        },
+
+        -- Elixir
+        elixirls = {
+            cmd = { "elixir-ls" },
+            filetypes = {"elixir", "eelixir", "heex"},
+            root_dir = make_root_dir({"mix.exs", ".git"}),
+        },
+
+        -- Erlang
+        erlangls = {
+            root_dir = make_root_dir({"rebar.config", ".git"}),
+        },
+
+        -- ESLint
+        eslint = {
+            filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
+            root_dir = make_root_dir({".eslintrc", "package.json", ".git"}),
+        },
+
+        -- F#
+        fsautocomplete = {
+            filetypes = {"fsharp"},
+            root_dir = make_root_dir({"*.fsproj", ".git"}),
+        },
+
+        -- Fortran
+        fortls = {
+            filetypes = {"fortran"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- Go
+        gopls = {
+            filetypes = {"go", "gomod"},
+            root_dir = make_root_dir({"go.mod", ".git"}),
+            settings = {
+                gopls = {
+                    analyses = { unusedparams = true },
+                    staticcheck = true,
+                },
+            },
+        },
+
+        golangci_lint_ls = {
+            filetypes = {'go', 'gomod'},
+            root_dir = make_root_dir({'.golangci.yml', 'go.mod', '.git'}),
+        },
+
+        -- GraphQL
+        graphql = {
+            filetypes = { "graphql", "gql" },
+            root_dir = make_root_dir({'.graphqlrc', '.git'}),
+        },
+
+        -- Haskell
+        hls = {
+            filetypes = { "haskell", "lhaskell" },
+            root_dir = make_root_dir({"*.cabal", "stack.yaml", ".git"}),
+        },
+
+        -- HTML
+        html = {
+            filetypes = { "html", "htmldjango" },
+            root_dir = make_root_dir({"package.json", ".git"}),
+        },
+
+        -- Java
+        jdtls = {
+            filetypes = {"java"},
+            root_dir = make_root_dir({"pom.xml", "build.gradle", ".git"}),
+        },
+
+        -- JavaScript/TypeScript
+        ts_ls = {
+            filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
+            root_dir = make_root_dir({"package.json", "tsconfig.json", ".git"}),
+        },
+
+        denols = {
+            filetypes = {"javascript", "typescript"},
+            root_dir = make_root_dir({"deno.json", "deno.jsonc"}),
+        },
+
+        -- JSON
+        jsonls = {
+            filetypes = {"json", "jsonc"},
+            root_dir = make_root_dir({"package.json", ".git"}),
+        },
+
+        -- Julia
+        julials = {
+            filetypes = {"julia"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- Kotlin
+        kotlin_language_server = {
+            root_dir = make_root_dir({"build.gradle", ".git"}),
+        },
+
+        -- Lua
+        lua_ls = {
+            filetypes = {"lua"},
+            root_dir = make_root_dir({".git"}),
+            settings = {
+                Lua = {
+                    runtime = { version = 'LuaJIT' },
+                    diagnostics = { globals = {'vim'} },
+                    workspace = {
+                        library = vim.api.nvim_get_runtime_file("", true),
+                        checkThirdParty = false,
+                    },
+                    telemetry = { enable = false },
+                },
+            },
+        },
+
+        -- Markdown
+        marksman = {
+            filetypes = {"markdown"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        remark_ls = {
+            filetypes = {"markdown"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- Nix
+        nil_ls = {
+            filetypes = {"nix"},
+            root_dir = make_root_dir({"flake.nix", ".git"}),
+        },
+
+        -- OCaml
+        ocamllsp = {
+            root_dir = make_root_dir({"*.opam", ".git"}),
+        },
+
+        -- PHP
+        intelephense = {
+            filetypes = {"php"},
+            root_dir = make_root_dir({"composer.json", ".git"}),
+        },
+
+        phpactor = {
+            filetypes = {"php"},
+            root_dir = make_root_dir({"composer.json", ".git"}),
+        },
+
+        psalm = {
+            filetypes = {"php"},
+            root_dir = make_root_dir({"psalm.xml", ".git"}),
+        },
+
+        -- PowerShell
+        powershell_es = {
+            filetypes = {"ps1", "psm1", "psd1"},
+        },
+
+        -- Prisma
+        prismals = {
+            filetypes = {"prisma"},
+            root_dir = make_root_dir({"package.json", ".git"}),
+        },
+
+        -- Python
+        pyright = {
+            filetypes = {"python"},
+            root_dir = make_root_dir({"pyproject.toml", "setup.py", ".git"}),
+            settings = {
+                python = {
+                    analysis = {
+                        autoSearchPaths = true,
+                        diagnosticMode = "workspace",
+                        typeCheckingMode = "basic",
+                    },
+                },
+            },
+        },
+
+        pylsp = {
+            filetypes = {"python"},
+            root_dir = make_root_dir({"pyproject.toml", ".git"}),
+        },
+
+        jedi_language_server = {
+            filetypes = {"python"},
+            root_dir = make_root_dir({"pyproject.toml", ".git"}),
+        },
+
+        ruff = {
+            filetypes = {"python"},
+            root_dir = make_root_dir({"pyproject.toml", ".git"}),
+        },
+
+        -- R
+        r_language_server = {
+            filetypes = {"r", "rmd"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- Ruby
+        solargraph = {
+            filetypes = {"ruby"},
+            root_dir = make_root_dir({"Gemfile", ".git"}),
+        },
+
+        -- Rust
+        rust_analyzer = {
+            filetypes = {"rust"},
+            root_dir = make_root_dir({"Cargo.toml", ".git"}),
+            settings = {
+                ['rust-analyzer'] = {
+                    cargo = { loadOutDirsFromCheck = true },
+                    procMacro = { enable = true },
+                },
+            }
+        },
+
+        -- Scala
+        metals = {
+            root_dir = make_root_dir({"build.sbt", ".git"}),
+        },
+
+        -- Solidity
+        solidity_ls = {
+            filetypes = {"solidity"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- SQL
+        sqlls = {
+            filetypes = {"sql"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        sqls = {
+            filetypes = {"sql", "mysql"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- Svelte
+        svelte = {
+            filetypes = { "svelte" },
+            root_dir = make_root_dir({"package.json", ".git"}),
+        },
+
+        -- TOML
+        taplo = {
+            filetypes = {"toml"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- LaTeX
+        texlab = {
+            filetypes = {"tex", "plaintex", "bib"},
+            root_dir = make_root_dir({".git"}),
+            settings = {
+                texlab = {
+                    auxDirectory = ".",
+                    build = {
+                        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                        executable = "latexmk",
+                        onSave = false
+                    },
+                }
+            }
+        },
+
+        -- Terraform
+        terraformls = {
+            filetypes = {"terraform", "tf"},
+            root_dir = make_root_dir({".terraform", ".git"}),
+        },
+
+        -- Vim
+        vimls = {
+            filetypes = {"vim"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- Vue
+        volar = {
+            filetypes = {'vue'},
+            root_dir = make_root_dir({"package.json", ".git"}),
+        },
+
+        vuels = {
+            filetypes = { "vue" },
+            root_dir = make_root_dir({"package.json", ".git"}),
+        },
+
+        -- XML
+        lemminx = {
+            filetypes = {"xml", "xsd", "svg"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- YAML
+        yamlls = {
+            filetypes = {"yaml"},
+            root_dir = make_root_dir({".git"}),
+            settings = {
+                yaml = {
+                    schemas = {
+                        ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+                    },
+                    validate = true,
+                },
+            },
+        },
+
+        ansiblels = {
+            filetypes = {"yaml.ansible"},
+            root_dir = make_root_dir({".git"}),
+        },
+
+        -- Zig
+        zls = {
+            filetypes = {"zig"},
+            root_dir = make_root_dir({"build.zig", ".git"}),
+        },
+
+        -- Additional
+        angularls = {
+            filetypes = {"typescript", "html"},
+            root_dir = make_root_dir({"angular.json", ".git"}),
+        },
+
+        astro = {
+            filetypes = {"astro"},
+            root_dir = make_root_dir({"package.json", ".git"}),
+        },
+
+        crystalline = {
+            filetypes = {"crystal"},
+            root_dir = make_root_dir({"shard.yml", ".git"}),
+        },
+    }
+
+    -- Register all configurations
+    for name, config in pairs(servers) do
+        config.capabilities = capabilities
+        config.on_attach = on_attach
+        vim.lsp.config(name, config)
+    end
+
+    -- Comprehensive filetype mapping
+    local ft_to_servers = {
+        asm = {"asm_lsp"}, s = {"asm_lsp"}, S = {"asm_lsp"},
+        bash = {"bashls"}, sh = {"bashls"},
+        c = {"clangd"}, cpp = {"clangd"}, objc = {"clangd"},
+        cs = {"omnisharp"},
+        clojure = {"clojure_lsp"}, edn = {"clojure_lsp"},
+        cmake = {"neocmake"},
+        crystal = {"crystalline"},
+        css = {"cssls"}, scss = {"cssls"}, less = {"cssls"},
+        dart = {"dartls"},
+        dockerfile = {"dockerls"},
+        ["yaml.docker-compose"] = {"docker_compose_language_service"},
+        elixir = {"elixirls"}, eelixir = {"elixirls"},
+        erlang = {"erlangls"},
+        fsharp = {"fsautocomplete"},
+        fortran = {"fortls"},
+        go = {"gopls"}, gomod = {"gopls"},
+        graphql = {"graphql"}, gql = {"graphql"},
+        haskell = {"hls"}, lhaskell = {"hls"},
+        html = {"html"}, htmldjango = {"html"},
+        java = {"jdtls"},
+        javascript = {"ts_ls", "eslint"},
+        javascriptreact = {"ts_ls", "eslint", "cssmodules_ls"},
+        typescript = {"ts_ls", "eslint"},
+        typescriptreact = {"ts_ls", "eslint", "cssmodules_ls"},
+        json = {"jsonls"}, jsonc = {"jsonls"},
+        julia = {"julials"},
+        kotlin = {"kotlin_language_server"},
+        lua = {"lua_ls"},
+        markdown = {"marksman"},
+        nix = {"nil_ls"},
+        ocaml = {"ocamllsp"},
+        php = {"intelephense"},
+        ps1 = {"powershell_es"},
+        prisma = {"prismals"},
+        python = {"pyright", "ruff"},
+        r = {"r_language_server"}, rmd = {"r_language_server"},
+        ruby = {"solargraph"},
+        rust = {"rust_analyzer"},
+        scala = {"metals"},
+        solidity = {"solidity_ls"},
+        sql = {"sqlls"}, mysql = {"sqls"},
+        svelte = {"svelte"},
+        tex = {"texlab"}, plaintex = {"texlab"}, bib = {"texlab"},
+        terraform = {"terraformls"}, tf = {"terraformls"},
+        toml = {"taplo"},
+        vim = {"vimls"},
+        vue = {"volar"},
+        xml = {"lemminx"}, xsd = {"lemminx"},
+        yaml = {"yamlls"},
+        ["yaml.ansible"] = {"ansiblels"},
+        zig = {"zls"},
+        astro = {"astro"},
+    }
+
+    -- Enable LSP on FileType
+    vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("LspAttach", { clear = true }),
         callback = function(args)
-            setup_lsp_for_buffer(args.buf)
+            local servers = ft_to_servers[vim.bo[args.buf].filetype]
+            if servers then
+                for _, server in ipairs(servers) do
+                    vim.lsp.enable(server)
+                end
+            end
         end,
     })
 end
 
--- Return the module
 return M

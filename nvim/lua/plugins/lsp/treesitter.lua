@@ -15,7 +15,6 @@ return {
                 },
                 filetype = { "cypher", "cql" },
             }
-
             require 'nvim-treesitter.configs'.setup {
                 ensure_installed = {
                     "asm", "bash", "c", "clojure", "cmake", "css", "cypher", "dockerfile", "elixir",
@@ -27,6 +26,7 @@ return {
                 auto_install = true,
                 highlight = {
                     enable = true,
+                    disable = { "latex" },  -- Add this line to let VimTeX handle LaTeX
                     additional_vim_regex_highlighting = false,
                 },
             }
