@@ -22,7 +22,7 @@ vim.opt_local.autoindent = true
 vim.opt_local.smartindent = true
 
 -- Enable concealment
-vim.opt_local.conceallevel = 2
+vim.opt_local.conceallevel = 0
 
 -- Set foldmethod to syntax
 vim.opt_local.foldmethod = "syntax"

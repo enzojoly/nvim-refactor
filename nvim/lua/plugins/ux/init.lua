@@ -1,4 +1,4 @@
--- plugins/notifs/init.lua
+-- plugins/ux/init.lua
 -- Entry point for notification-related plugin configurations
 
 return {

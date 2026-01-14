@@ -1,4 +1,4 @@
--- plugins/vimtex.lua
+-- plugins/ux/vimtex.lua
 -- Configuration for VimTeX plugin
 
 return {

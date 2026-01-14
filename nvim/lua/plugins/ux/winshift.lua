@@ -1,4 +1,4 @@
--- plugins/winshift.lua
+-- plugins/ux/winshift.lua
 -- Configuration for winshift plugin
 
 return {

@@ -1,4 +1,4 @@
--- plugins/lualine.lua
+-- plugins/ux/lualine.lua
 -- Configuration for lualine plugin
 
 return {

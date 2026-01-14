@@ -1,4 +1,4 @@
--- plugins/undotree.lua
+-- plugins/ux/undotree.lua
 -- Configuration for undotree plugin
 
 return {

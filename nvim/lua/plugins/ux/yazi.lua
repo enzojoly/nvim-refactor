@@ -1,4 +1,4 @@
--- plugins/yazi.lua
+-- plugins/ux/yazi.lua
 -- Configuration for yazi plugin
 
 return {

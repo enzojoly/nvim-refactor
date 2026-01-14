@@ -1,54 +1,39 @@
--- markdown.lua
+-- ftplugin/markdown.lua
+-- Clean markdown editing - no auto-formatting that breaks structure
 
--- Set local options for markdown files
+-- Display: see what you're editing
+vim.opt_local.conceallevel = 0
 vim.opt_local.wrap = true
-vim.opt_local.spell = true
-vim.opt_local.spelllang = "en_gb"
-vim.opt_local.conceallevel = 2
-vim.opt_local.textwidth = 180
-vim.opt_local.formatoptions:append('a')
+vim.opt_local.linebreak = true
+vim.opt_local.breakindent = true
+
+-- Indentation
 vim.opt_local.expandtab = true
 vim.opt_local.tabstop = 2
 vim.opt_local.shiftwidth = 2
 
--- Enable fenced code block syntax highlighting
-vim.g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'lua' }
+-- CRITICAL: Disable auto-formatting that causes collapsing
+vim.opt_local.formatoptions = "tqln"
+--  t = auto-wrap text using textwidth
+--  q = allow formatting comments with gq
+--  l = don't break long lines in insert mode
+--  n = recognize numbered lists
 
--- Keymappings specific to markdown files
-vim.api.nvim_buf_set_keymap(0, 'n', '<leader>p', ':InsertImage<CR>', { noremap = true, silent = true })
-vim.api.nvim_buf_set_keymap(0, 'n', '<leader>t', ':TableFormat<CR>', { noremap = true, silent = true })
+-- Spell check (toggle with <F5> from your remap.lua)
+vim.opt_local.spell = false
+vim.opt_local.spelllang = "en_gb"
 
--- Enable Goyo by default for mutt writing
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = "/tmp/neomutt*",
-    callback = function()
-        vim.cmd([[
-            let g:goyo_width=80
-            :Goyo
-            set bg=light
-        ]])
-    end,
-})
+-- Syntax highlighting in fenced code blocks
+vim.g.markdown_fenced_languages = {
+    "bash=sh", "sh", "zsh",
+    "python", "lua", "c", "cpp",
+    "javascript", "typescript",
+    "html", "css", "json", "yaml",
+    "sql", "nix"
+}
 
--- Set filetype for calcurse notes
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = { "/tmp/calcurse*", "~/.calcurse/notes/*" },
-    command = [[set filetype=markdown]],
-})
-
--- Remove trailing whitespace and newlines on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.md",
-    callback = function()
-        local save_cursor = vim.fn.getpos(".")
-        vim.cmd([[%s/\s\+$//e]])
-        vim.cmd([[%s/\n\+\%$//e]])
-        vim.fn.setpos(".", save_cursor)
-    end,
-})
-
--- Dash-dash-space signature delimiter in emails (assuming markdown for emails)
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*neomutt*",
-    command = [[%s/^--$/-- /e]],
-})
+-- Keymaps
+local opts = { buffer = true, silent = true }
+vim.keymap.set("n", "<leader>p", "<cmd>PasteImage<CR>", opts)
+vim.keymap.set("n", "j", "gj", opts)
+vim.keymap.set("n", "k", "gk", opts)

@@ -1,4 +1,4 @@
--- plugins/nerdtree.lua
+-- plugins/ux/nerdtree.lua
 -- Configuration for NERDTree plugin
 
 return {
